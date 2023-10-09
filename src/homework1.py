@@ -67,8 +67,10 @@ class Hw1Env(environment.BaseEnv):
             self._set_joint_position({i: angle for i, angle in enumerate(self._init_position)})
 
 
-def collect(idx, N):
+def collect(idx, N): #idx represents an index, and N represents the number of data samples to collect.
     env = Hw1Env(render_mode="offscreen")
+    """"Three empty torch tensors, positions, actions, and imgs, are created to store data collected during the simulation. 
+    These tensors will hold positional data, action data, and image data, respectively."""
     positions = torch.zeros(N, 2, dtype=torch.float)
     actions = torch.zeros(N, dtype=torch.uint8)
     imgs = torch.zeros(N, 3, 128, 128, dtype=torch.uint8)
@@ -89,7 +91,9 @@ if __name__ == "__main__":
     processes = []
     for i in range(4):
         p = Process(target=collect, args=(i, 100))
+        print(p)
         p.start()
         processes.append(p)
     for p in processes:
         p.join()
+    print(processes)
